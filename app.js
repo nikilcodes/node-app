@@ -1,12 +1,16 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const app = express();
-dotenv.config();
-const PORT = process.env.PORT;
+const moduleRoute = require('./Routes/Module.route');
 
-app.get('/',(req,res,next)=>{
-    res.send("This is the default response");
-});
+
+const app = express();
+
+dotenv.config();
+const PORT = process.env.PORT || 3500;
+
+app.use('/',moduleRoute);
+
+
 
 app.listen(PORT,()=>{
     console.log(`Listening on server ${PORT}`);
