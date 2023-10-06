@@ -10,6 +10,8 @@ route.get('/',(req,res)=>{
 
 route.use('/products',Product);
 
+
+// Error handling
 route.use((req,res,next)=>{
     const error = new Error();
     error.message ="Not Found";
