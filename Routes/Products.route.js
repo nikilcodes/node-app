@@ -5,12 +5,21 @@ route.get('/',(req,res)=>{
     res.send('These are all products');
 });
 
-route.post('/',(req,res)=>{
-    const product = new Product({
-        name:req.body.name,
-        price:req.body.price
-    })
-    res.send('Product updated');
+route.post('/',async(req,res)=>{
+     try{
+        const product = new Product(req.body);
+        const result = await product.save();
+     }catch(error){
+        console.log(error.message);
+     }   
+    // const product = new Product({
+    //     name:req.body.name,
+    //     price:req.body.price
+    // });
+    // product.save().then((result)=>{
+    //     res.send(result);
+    // }).catch(error =>console.log(error));
+
 });
 
 route.get('/:id',(req,res)=>{
