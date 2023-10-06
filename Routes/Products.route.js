@@ -29,16 +29,35 @@ route.post('/',async(req,res)=>{
 
 });
 
-route.get('/:id',(req,res)=>{
-
-    res.send(req.params);
+route.get('/:id',async(req,res)=>{
+    try{
+    const id = req.params.id;
+    const result = await Product.findById(id);
+    res.send(result);
+    }catch(err){
+        console.log(err);
+    }
 });
 
-route.patch('/:id',(req,res)=>{
-    res.send('These are products by id updated');
+route.patch('/:id',async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const updates = req.body;
+        const options = {new:true};
+        const result = await Product.findByIdAndUpdate(id,updates,options);
+        res.send(result);
+    }catch(err){
+        console.log(err);
+    }
 });
 
-route.delete('/:id',(req,res)=>{
-    res.send('These are all products deleted');
+route.delete('/:id',async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const result = await Product.findByIdAndDelete(id);
+        res.send(result);
+    }catch(err){
+        console.log(err);
+    } 
 });
 module.exports=route;
