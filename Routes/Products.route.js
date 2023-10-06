@@ -1,14 +1,21 @@
 const express = require('express');
 const route = express.Router();
 const Product = require('../Models/Product.model');
-route.get('/',(req,res)=>{
-    res.send('These are all products');
+
+route.get('/',async(req,res)=>{
+    try{
+        const result = await Product.find({},{__v:0});
+        //const result = await Product.find({},{name:1,price:1,_id:0});
+        res.send(result);
+    }catch(err){
+        console.log(err.message);
+    }
 });
 
 route.post('/',async(req,res)=>{
      try{
         const product = new Product(req.body);
-        const result = await product.save();
+        const result = await product.save().then(result => res.send(result)).catch(err=>console.log(err));
      }catch(error){
         console.log(error.message);
      }   
