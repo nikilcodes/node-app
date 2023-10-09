@@ -1,4 +1,5 @@
 const express = require('express');
+const createError = require('http-errors');
 const route = express.Router();
 
 const Product = require('./Products.route');
@@ -13,10 +14,11 @@ route.use('/products',Product);
 
 // Error handling
 route.use((req,res,next)=>{
-    const error = new Error();
-    error.message ="Not Found";
-    error.status = 404;
-    next(error);
+    // const error = new Error();
+    // error.message ="Not Found";
+    // error.status = 404;
+    // next(error);
+    next(createError(404,'Page Not Found'));
 })
 
 route.use((error,req,res,next)=>{
