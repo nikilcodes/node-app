@@ -58,7 +58,6 @@ module.exports = {
     } catch (err) {
       if (err.name === "ValidationError") {
         next(createError(422, err.message));
-        return;
       }
       next(err);
     }
