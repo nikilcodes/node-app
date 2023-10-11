@@ -9,11 +9,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 dotenv.config();
 const PORT = process.env.PORT || 3500;
+
 connection().catch(err => console.log(err));
+require("./initDB")();
+
 
 app.use('/',moduleRoute);
-
-
 
 async function connection(){
     await mongoose.connect(`mongodb://127.0.0.1:27017/restapi`).then(()=>{    
