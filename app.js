@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const moduleRoute = require('./Routes/Module.route');
@@ -7,6 +8,7 @@ const moduleRoute = require('./Routes/Module.route');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(morgan('dev'));
 dotenv.config();
 const PORT = process.env.PORT || 3500;
 
