@@ -3,14 +3,14 @@ const createError = require('http-errors');
 const route = express.Router();
 
 const Product = require('./Products.route');
-
+const AuthRoute = require('./Auth.route');
 
 route.get('/',(req,res)=>{
     res.send('this is the main route');    
 })
 
 route.use('/products',Product);
-
+route.use('/auth',AuthRoute);
 
 // Error handling
 route.use((req,res,next)=>{
@@ -18,7 +18,7 @@ route.use((req,res,next)=>{
     // error.message ="Not Found";
     // error.status = 404;
     // next(error);
-    next(createError(404,'Page Not Found'));
+    next(createError.NotFound('Page Not Found'));
 })
 
 route.use((error,req,res,next)=>{
