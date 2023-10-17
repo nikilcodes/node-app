@@ -2,6 +2,8 @@ const { default: mongoose } = require("mongoose");
 const createError = require("http-errors");
 
 const Product = require("../Models/Product.model");
+const {productSchema} = require('../validation.schema'); 
+
 module.exports = {
   getAllProducts: async (req, res) => {
     try {
@@ -31,11 +33,15 @@ module.exports = {
   createNewProduct: async (req, res, next) => {
     try {
       const product = new Product(req.body);
+      const valid = await productSchema.validateAsync(req.body)
       const result = await product.save();
       res.send(result);
     } catch (error) {
       console.log("This is error" + error);
       console.log(error);
+      if(error.isJoi === true){
+        error.status = 422;
+      }
       if (error.name === "ValidationError") 
         next(createError(422, error.message));
       next(error);
