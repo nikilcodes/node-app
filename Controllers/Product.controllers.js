@@ -33,7 +33,7 @@ module.exports = {
   createNewProduct: async (req, res, next) => {
     try {
       const product = new Product(req.body);
-      const valid = await productSchema.validateAsync(req.body)
+      await productSchema.validateAsync(req.body)
       const result = await product.save();
       res.send(result);
     } catch (error) {
@@ -57,11 +57,15 @@ module.exports = {
   updateProduct: async (req, res) => {
     try {
       const id = req.params.id;
+      await productSchema.validateAsync(req.body);
       const updates = req.body;
       const options = { new: true };
       const result = await Product.findByIdAndUpdate(id, updates, options);
       res.send(result);
     } catch (err) {
+      if(err.isJoi === true){
+        err.status = 422;
+      }
       if (err.name === "ValidationError") {
         next(createError(422, err.message));
       }
