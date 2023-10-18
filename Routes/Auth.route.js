@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const User = require('../Models/User.model');
 const {authSchema} = require('../validation.schema');
-
+const {signAccessToken} = require('../helpers/jwt_helpers');
 const route = express.Router();
 
 route.post('/register',async(req,res,next)=>{
@@ -13,7 +13,6 @@ route.post('/register',async(req,res,next)=>{
         //     throw createError.BadRequest();
         // }
         const result = await authSchema.validateAsync(req.body);
-        console.log(result);
         const doesExist = await User.findOne({email:result.email});
         if(doesExist){
             throw createError.Conflict(`${result.email} is already registered`);
@@ -21,7 +20,9 @@ route.post('/register',async(req,res,next)=>{
 
         const user = new User(result);
         const savedUser = await user.save();
-        res.send(savedUser);
+        const accessToken = await signAccessToken(savedUser.id);
+        console.log(accessToken);
+        res.send(accessToken);
 
     }catch(error){
         if(error.isJoi === true){
