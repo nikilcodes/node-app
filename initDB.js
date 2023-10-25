@@ -13,8 +13,8 @@ module.exports=()=>{
         console.log("Mongoose connection is disconnected");
     });
 
-    process.on('SIGNIT',()=>{
-        mongoose.connection.close(()=>{
+    process.on('SIGNIT',async ()=>{
+       await mongoose.connection.close(()=>{
             console.log("Mongoose connection is disconnected due to app termination...");
         });
         console.log("123");

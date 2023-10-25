@@ -31,7 +31,27 @@ route.post('/register',async(req,res,next)=>{
         next(error);
     }
 });
-route.post('/login',(req,res,next)=>{});
+route.post('/login',async(req,res,next)=>{
+    try{
+        const result = await authSchema.validateAsync(req.body);
+        const  user = await User.findOne({email:result.email})
+        if(!user){
+            throw createError.NotFound("User not registered");
+        }
+        const isMatch = await user.isValidPassword(result.password);
+        if(!isMatch){
+            throw createError.Unauthorized("Username/password not correct");
+        }
+        const accessToken = await signAccessToken(user.id);
+        res.send(accessToken);
+
+    }catch(err){
+        if(err.isJoi){
+            err.status = 422;
+        }
+        next(err);
+    }
+});
 route.post('/refresh-token',(req,res,next)=>{});
 route.delete('/logout',(req,res,next)=>{});
 module.exports=route;
