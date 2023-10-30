@@ -1,11 +1,12 @@
 const express = require('express');
 const createError = require('http-errors');
 const route = express.Router();
-
+const {verifyAccessToken} = require('../helpers/jwt_helpers');
 const Product = require('./Products.route');
 const AuthRoute = require('./Auth.route');
 
-route.get('/',(req,res)=>{
+route.get('/',verifyAccessToken,(req,res)=>{
+    console.log(req.headers['authorization']);
     res.send('this is the main route');    
 })
 
