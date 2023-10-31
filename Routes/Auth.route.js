@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const User = require('../Models/User.model');
 const {authSchema} = require('../validation.schema');
-const {signAccessToken} = require('../helpers/jwt_helpers');
+const {signAccessToken, verifyAccessToken} = require('../helpers/jwt_helpers');
 const route = express.Router();
 
 route.post('/register',async(req,res,next)=>{
