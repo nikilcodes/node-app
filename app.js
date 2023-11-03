@@ -3,13 +3,18 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const moduleRoute = require('./Routes/Module.route');
-
-
+const cors = require('cors');
+dotenv.config();
 const app = express();
+const corsOptions  ={
+    origin:process.env.SOURCE
+}
+console.log(corsOptions);
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));
-dotenv.config();
+
 const PORT = process.env.PORT || 3500;
 
 connection().catch(err => console.log(err));
